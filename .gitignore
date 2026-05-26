@@ -1,3 +1,5 @@
 *.geo
 *.pos
 *.msh
+*.pos
+*.msh
