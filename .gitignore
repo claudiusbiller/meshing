@@ -1,4 +1,22 @@
-*.pos
+# Gmsh output
 *.msh
+*.geo_unrolled
+
+# GetDP output
+*.pre
+*.res
 *.pos
-*.msh
+
+# Solver results
+*.csv
+V_grid.txt
+potential.pos
+efield.pos
+
+# Visualization scratch
+clip.opt
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
