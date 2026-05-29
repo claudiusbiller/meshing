@@ -1,9 +1,3 @@
-// ==================================================
-// Electrostatic problem on the helix waveguide
-// Solves in vacuum only; wire is a Dirichlet boundary.
-// Solution V is the unit-voltage Green's function:
-//   V_physical(x) = V_0_ph * V_solved(x)
-// ==================================================
 
 Group {
   // Physical entities from helix.geo
@@ -103,10 +97,6 @@ PostProcessing {
           Term { [ {v} ]; In Dom_Hgrad_v_Ele; Jacobian Vol; }
         }
       }
-      { Name e; Value {
-          Term { [ -{d v} ]; In Dom_Hgrad_v_Ele; Jacobian Vol; }
-        }
-      }
     }
   }
 }
@@ -114,16 +104,17 @@ PostProcessing {
 PostOperation {
   { Name Map; NameOfPostProcessing EleSta_v;
     Operation {
-      Print[ v, OnElementsOf Vol_Ele, File "potential.pos" ];
-      Print[ e, OnElementsOf Vol_Ele, File "efield.pos" ];
+      // Volume outputs disabled -- they write hundreds of MB.
+      // Re-enable on demand (separate run) if you want to visualize V in gmsh.
+      // Print[ v, OnElementsOf Vol_Ele, File "potential.pos" ];
+      // Print[ e, OnElementsOf Vol_Ele, File "efield.pos" ];
 
-      // Grid output for downstream Python use.
-      // x, y span the cylinder diameter [-1, 1]; z spans the box [0, 24].
-      // Resolution: 0.02 in x,y => 101 points each; 0.05 in z => 481 points.
-      // Total: 101 * 101 * 481 ≈ 4.9M samples. Adjust if too heavy.
+      // Grid output for Boris integrator.
+      // x, y: [-0.1, 0.1] with dx=dy=0.003 -- L_A at rho=0.034 well bracketed.
+      // z:    [0, 24]    with dz=0.05      -- 60 samples per pitch.
+      // Total: 67 * 67 * 481 = 2.16M samples. ~70 MB ASCII.
       Print[ v, OnGrid { $A, $B, $C }
-            //{ -1.0:1.0:0.02, -1.0:1.0:0.02, 0:24:0.05 },
-            { -0.3:0.3:0.02, -0.3:0.3:0.02, 0:24:0.05 },
+            { -0.1:0.1:0.003, -0.1:0.1:0.003, 0:24:0.05 },
             File "V_grid.txt", Format SimpleTable ];
     }
   }

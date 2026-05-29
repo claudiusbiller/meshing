@@ -1,17 +1,9 @@
-# Gmsh output
-*.msh
+# Gmsh intermediate
 *.geo_unrolled
 
-# GetDP output
+# GetDP intermediate solver state
 *.pre
 *.res
-*.pos
-
-# Solver results
-*.csv
-V_grid.txt
-potential.pos
-efield.pos
 
 # Visualization scratch
 clip.opt
